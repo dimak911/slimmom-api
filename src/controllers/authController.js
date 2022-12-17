@@ -1,10 +1,12 @@
 const User = require("../models/schemas/authModel");
 
+const { customError } = require("../helpers/errors");
+
 const signup = async (req, res, next) => {
     const { name, email, password } = req.body;
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-        return res.status(409).json({ "message": 'Email in use' });
+        throw customError({ status: 409, message: "Email in use" });
     }
 
     try {
@@ -13,7 +15,8 @@ const signup = async (req, res, next) => {
         return res.status(201).json({
             user: {
                 name,
-                email
+                email,
+                userId: user._id,
             },
         });
     } catch (error) {
