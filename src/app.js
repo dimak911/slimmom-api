@@ -6,6 +6,7 @@ const swaggerDocument = require('../swagger.json');
 
 // import routers here
 const usersProductsRouter = require("./routes/api/usersProducts");
+const authRouter = require("./routes/api/auth");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // use routers here
 app.use("/api", usersProductsRouter);
+app.use("/api/auth", authRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
