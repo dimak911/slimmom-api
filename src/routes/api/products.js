@@ -1,5 +1,9 @@
 const express = require("express");
 const { asyncWrapper } = require("../../helpers/apiHelpers");
+const {
+  validationQuery,
+} = require("../../middlewares/validationMiddleware.js");
+const { productsSchema } = require("../../joiSchema/productsSchema");
 
 const {
   getProductsController,
@@ -7,6 +11,10 @@ const {
 
 const router = express.Router();
 
-router.get("/", asyncWrapper(getProductsController));
+router.get(
+  "/",
+  validationQuery(productsSchema),
+  asyncWrapper(getProductsController)
+);
 
 module.exports = router;
