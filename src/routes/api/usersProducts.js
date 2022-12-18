@@ -7,6 +7,6 @@ const {
 const router = express.Router();
 
 // TODO: добавить проверку авторизации
-router.get("/diary/:date", asyncWrapper(getUserProductsByDateController));
+router.get("/:date", asyncWrapper(getUserProductsByDateController));
 
 module.exports = router;
