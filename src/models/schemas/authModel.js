@@ -15,6 +15,12 @@ const userSchema = new Schema(
       required: [true, "Email is required"],
       unique: true,
     },
+    callorie: {
+      type: String,
+    },
+    notRecommendedProduct: {
+      type: Array,
+    },
     token: {
       type: String,
       default: null,
