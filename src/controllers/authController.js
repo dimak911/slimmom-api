@@ -52,13 +52,13 @@ const login = async (req, res, next) => {
         id: user.id,
     };
 
-    const token = jwt.sign(payload, process.env.SECRET_KEY);
 
-    await User.findByIdAndUpdate(user.id, { token });
-    res.status(200).json({
-        token,
-        user: { email: user.email },
-    });
+  const token = jwt.sign(payload, process.env.SECRET_KEY);
+  await User.findByIdAndUpdate(user.id, { token });
+  res.status(200).json({
+    token,
+    user: { email: user.email },
+  });
 };
 
 const logout = async (req, res, next) => {
