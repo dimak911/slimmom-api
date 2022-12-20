@@ -13,7 +13,7 @@ const postUserDiaryInfoController = async (req, res, next) => {
 
 const getUserDiaryInfoController = async (req, res, next) => {
   const { id } = req.user;
-  console.log(id)
+
   if (!id) {
     return res.status(400).json({ message: "No data" });
   }

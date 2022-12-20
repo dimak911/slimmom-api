@@ -27,7 +27,7 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
     throw customError({ status: 401, message: "Email or password is wrong" });
@@ -43,7 +43,6 @@ const login = async (req, res, next) => {
   };
 
   const token = jwt.sign(payload, process.env.SECRET_KEY);
-  console.log(process.env.SECRET_KEY)
   await User.findByIdAndUpdate(user.id, { token });
   res.status(200).json({
     token,
