@@ -43,7 +43,6 @@ const login = async (req, res, next) => {
   };
 
   const token = jwt.sign(payload, process.env.SECRET_KEY);
-
   await User.findByIdAndUpdate(user.id, { token });
   res.status(200).json({
     token,
