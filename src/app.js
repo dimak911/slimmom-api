@@ -9,6 +9,8 @@ const usersProductsRouter = require("./routes/api/usersProducts");
 const authRouter = require("./routes/api/auth");
 const productsRouter = require("./routes/api/products");
 
+const itemRouter = require("./routes/api/diaryItemRoute");
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -21,6 +23,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // use routers here
 app.use("/api/diary", usersProductsRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/diaryListItem", itemRouter);
 app.use("/api/auth", authRouter);
 
 app.use((req, res) => {
