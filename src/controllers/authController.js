@@ -53,12 +53,12 @@ const login = async (req, res, next) => {
     };
 
 
-  const token = jwt.sign(payload, process.env.SECRET_KEY);
-  await User.findByIdAndUpdate(user.id, { token });
-  res.status(200).json({
-    token,
-    user: { email: user.email },
-  });
+    const token = jwt.sign(payload, process.env.SECRET_KEY);
+    await User.findByIdAndUpdate(user.id, { token });
+    res.status(200).json({
+        token,
+        user: { email: user.email, name: user.name },
+    });
 };
 
 const logout = async (req, res, next) => {
@@ -67,8 +67,21 @@ const logout = async (req, res, next) => {
     res.status(204).json();
 };
 
+const currentUser = async (req, res, next) => {
+    const { user } = req;
+    const currentUser = await User.findOne({ token: user.token });
+
+    return res.status(200).json({
+        user: {
+            name: currentUser.name,
+            email: currentUser.email,
+        },
+    });
+};
+
 module.exports = {
     login,
     logout,
     signup,
+    currentUser
 };
