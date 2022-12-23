@@ -5,7 +5,6 @@ const getUserProductsByDate = async (userId, date) => {
     owner: userId,
     date,
   }).catch(() => null);
-
   return userProductsByDate;
 };
 

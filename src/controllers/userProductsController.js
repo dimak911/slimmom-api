@@ -1,4 +1,5 @@
 const { deleteItemByID } = require("../models/usersProducts");
+const jwt = require("jsonwebtoken");
 
 const {
   getUserProductsByDate,
@@ -7,7 +8,12 @@ const {
 
 const getUserProductsByDateController = async (req, res, next) => {
   const date = req.params.date;
-  const userId = "1"; // TODO: заменить на user_id из реквеста
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decode = jwt.decode(token);
+  const userId = decode.id;
+
+  // const userId = "1"; // TODO: заменить на user_id из реквеста
   const usersProducts = await getUserProductsByDate(userId, date);
 
   if (!usersProducts.length) {
@@ -19,8 +25,10 @@ const getUserProductsByDateController = async (req, res, next) => {
 
 const createUserProductController = async (req, res) => {
   const date = req.params.date;
-  const userId = "1"; // TODO: заменить на user_id из реквеста
-  // const { _id: userId } = req.user;
+  // const userId = "1"; // TODO: заменить на user_id из реквеста
+  const token = req.headers.authorization.split(" ")[1];
+  const decode = jwt.decode(token);
+  const userId = decode.id;
 
   const createdUserProduct = await createUserProduct(userId, date, req.body);
 
