@@ -5,14 +5,21 @@ const jwt = require('jsonwebtoken');
 const { customError } = require('../helpers/errors');
 
 const signup = async (req, res, next) => {
-    const { name, email, password, data = null, callorie = null } = req.body;
+    const {
+        name,
+        email,
+        password,
+        data = null,
+        callorie = null,
+        notRecommendedProduct = [],
+    } = req.body;
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
         throw customError({ status: 409, message: 'Email in use' });
     }
 
     try {
-        const user = new User({ name, email, password, data, callorie });
+        const user = new User({ name, email, password, data, callorie, notRecommendedProduct });
         await user.save();
 
         const payload = {

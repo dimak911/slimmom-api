@@ -8,6 +8,7 @@ const registrationUserSchema = Joi.object({
     token: Joi.string(),
     callorie: Joi.string(),
     data: Joi.object(),
+    notRecommendedProduct: Joi.array(),
 });
 
 module.exports = { registrationUserSchema };
