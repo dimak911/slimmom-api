@@ -5,7 +5,16 @@ const { passport } = require("../../middlewares/passport");
 const ctrl = require("../../controllers/googleAuth");
 const { ctrlWrapper } = require("../../helpers/ctrlWrapper");
 
-const { login, logout, signup } = require("../../controllers/authController");
+const { passport } = require("../../middlewares/passport");
+const ctrl = require("../../controllers/googleAuth");
+const { ctrlWrapper } = require("../../helpers/ctrlWrapper");
+
+const {
+  login,
+  logout,
+  signup,
+  currentUser,
+} = require("../../controllers/authController");
 
 const { validationBody } = require("../../middlewares/validationMiddleware.js");
 const { schemaAuth } = require("../../joiSchema/authSchema");
@@ -22,6 +31,7 @@ router.post(
 );
 router.post("/login", validationBody(schemaAuth), asyncWrapper(login));
 router.get("/logout", validationToken, asyncWrapper(logout));
+router.get("/current", validationToken, asyncWrapper(currentUser));
 
 // google sign in
 
