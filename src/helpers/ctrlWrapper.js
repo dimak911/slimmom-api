@@ -12,4 +12,4 @@ const ctrlWrapper = (ctrl) => {
   return func;
 };
 
-module.exports = ctrlWrapper;
+module.exports = { ctrlWrapper };

@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const { v4: uuid } = require("uuid");
 const { Strategy } = require("passport-google-oauth2");
 const User = require("../../models/schemas/authModel");
+require("dotenv").config();
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
   process.env;

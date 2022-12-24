@@ -3,4 +3,6 @@ const googleStrategy = require("./strategy/google");
 
 passport.use("google", googleStrategy);
 
-module.exports = passport;
+module.exports = {
+  passport,
+};
