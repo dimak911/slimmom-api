@@ -5,10 +5,6 @@ const { passport } = require("../../middlewares/passport");
 const ctrl = require("../../controllers/googleAuth");
 const { ctrlWrapper } = require("../../helpers/ctrlWrapper");
 
-const { passport } = require("../../middlewares/passport");
-const ctrl = require("../../controllers/googleAuth");
-const { ctrlWrapper } = require("../../helpers/ctrlWrapper");
-
 const {
   login,
   logout,
