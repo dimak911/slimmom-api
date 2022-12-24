@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { passport } = require("../../middlewares/passport");
-const ctrl = require("../../controllers/googleAuth");
+const { googleAuth } = require("../../controllers/googleAuth");
 const { ctrlWrapper } = require("../../helpers/ctrlWrapper");
 
 const {
@@ -39,9 +39,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
-  ctrlWrapper(ctrl.googleAuth)
+  ctrlWrapper(googleAuth)
 );
-
-//
 
 module.exports = router;

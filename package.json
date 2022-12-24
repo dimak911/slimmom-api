@@ -17,6 +17,7 @@
     "cross-env": "7.0.3",
     "dotenv": "^16.0.3",
     "express": "4.17.1",
+    "express-session": "^1.17.3",
     "jimp": "^0.16.2",
     "joi": "^17.6.4",
     "jsonwebtoken": "^8.5.1",
