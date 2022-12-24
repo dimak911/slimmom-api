@@ -30,7 +30,7 @@ const createUserProductController = async (req, res) => {
   const decode = jwt.decode(token);
   const userId = decode.id;
 
-  const createdUserProduct = await createUserProduct(userId, date, req.body);
+  const createdUserProduct = await createUserProduct(userId, req.body);
 
   if (!createdUserProduct) {
     return res.status(404).json({ message: "Not found" });
