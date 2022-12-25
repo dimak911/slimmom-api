@@ -12,10 +12,6 @@ const getUserProductsByDateController = async (req, res, next) => {
 
     const usersProducts = await getUserProductsByDate(userId, date);
 
-    if (!usersProducts.length) {
-        return res.status(200).json({ message: 'No data' });
-    }
-
     res.status(200).json(usersProducts);
 };
 
