@@ -1,8 +1,4 @@
-const {
-  Schema,
-  model,
-  // SchemaTypes
-} = require("mongoose");
+const { Schema, model, SchemaTypes } = require("mongoose");
 
 const diaryUserProductSchema = new Schema({
   productName: {
@@ -19,8 +15,8 @@ const diaryUserProductSchema = new Schema({
   },
   owner: {
     // TODO: разкоментить когда будет коллекция юзеров
-    // type: SchemaTypes.ObjectId,
-    // ref: "user",
+    type: SchemaTypes.ObjectId,
+    ref: "user",
     type: String,
   },
   date: {

@@ -1,4 +1,5 @@
 const { deleteItemByID } = require("../models/usersProducts");
+const jwt = require("jsonwebtoken");
 
 const {
   getUserProductsByDate,
@@ -7,7 +8,12 @@ const {
 
 const getUserProductsByDateController = async (req, res, next) => {
   const date = req.params.date;
-  const userId = "1"; // TODO: заменить на user_id из реквеста
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decode = jwt.decode(token);
+  const userId = decode.id;
+
+  // const userId = "1"; // TODO: заменить на user_id из реквеста
   const usersProducts = await getUserProductsByDate(userId, date);
 
   if (!usersProducts.length) {
@@ -19,10 +25,12 @@ const getUserProductsByDateController = async (req, res, next) => {
 
 const createUserProductController = async (req, res) => {
   const date = req.params.date;
-  const userId = "1"; // TODO: заменить на user_id из реквеста
-  // const { _id: userId } = req.user;
+  // const userId = "1"; // TODO: заменить на user_id из реквеста
+  const token = req.headers.authorization.split(" ")[1];
+  const decode = jwt.decode(token);
+  const userId = decode.id;
 
-  const createdUserProduct = await createUserProduct(userId, date, req.body);
+  const createdUserProduct = await createUserProduct(userId, req.body);
 
   if (!createdUserProduct) {
     return res.status(404).json({ message: "Not found" });
@@ -32,14 +40,15 @@ const createUserProductController = async (req, res) => {
 };
 
 const deleteDiaryListItem = async (req, res, next) => {
-  const id = req.params.userid;
+  const id = req.params.id;
+  console.log(id);
   const item = await deleteItemByID(id);
 
   if (!item) {
     return res.status(404).json({ message: `id ${id} not found` });
   }
 
-  res.status(200).json({ message: "User successfully deleted" });
+  res.status(200).json({ message: "User successfully deleted", id });
 };
 
 module.exports = {
