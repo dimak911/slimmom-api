@@ -37,11 +37,7 @@
         ],
         "summary": "User registration",
         "parameters": [],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
+        "security": [],
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -80,11 +76,7 @@
         ],
         "summary": "User login",
         "parameters": [],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
+        "security": [],
         "requestBody": {
           "description": "Login's object",
           "required": true,
@@ -109,6 +101,57 @@
           },
           "401": {
             "description": "Email or password is wrong"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/auth/current": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Current User",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
           }
         }
       }
@@ -226,6 +269,32 @@
         },
         "example": {
           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYTg2NzQyNDdiZjlmZWEyZDQ5OTUwZiIsImlhdCI5MTY3MTk4MDg2N30.Zdd-6aGU9Gy22M591DRJe0gUuHpgy7umQBwECvfm0pk",
+          "user": {
+            "name": "Nicolas",
+            "email": "user@email.com"
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Nicolas"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              }
+            }
+          }
+        },
+        "example": {
           "user": {
             "name": "Nicolas",
             "email": "user@email.com"
