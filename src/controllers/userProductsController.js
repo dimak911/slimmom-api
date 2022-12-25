@@ -40,14 +40,15 @@ const createUserProductController = async (req, res) => {
 };
 
 const deleteDiaryListItem = async (req, res, next) => {
-  const id = req.params.userid;
+  const id = req.params.id;
+  console.log(id);
   const item = await deleteItemByID(id);
 
   if (!item) {
     return res.status(404).json({ message: `id ${id} not found` });
   }
 
-  res.status(200).json({ message: "User successfully deleted" });
+  res.status(200).json({ message: "User successfully deleted", id });
 };
 
 module.exports = {
