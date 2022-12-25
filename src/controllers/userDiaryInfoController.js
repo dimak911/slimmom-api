@@ -1,35 +1,26 @@
-const {
-  getUserDiaryInfo,
-  postUserDiaryInfo,
-} = require("../models/diaryInfoModels");
-
-const postUserDiaryInfoController = async (req, res, next) => {
-  const { id, callorie, notRecommendedProduct } = req.user;
-  // const { callorie, notRecommendedProduct } = req.body;
-
-  if (!id) {
-    return res.status(400).json({ message: "No data" });
-  }
-  console.log(id);
-  await postUserDiaryInfo(id, callorie, notRecommendedProduct);
-  res.status(200).json({ message: "Succes" });
-};
+const { getUserDiaryInfo, postUserDiaryInfo } = require('../models/diaryInfoModels');
 
 const getUserDiaryInfoController = async (req, res, next) => {
-  const { id } = req.user;
+    const { _id } = req.user;
 
-  if (!id) {
-    return res.status(400).json({ message: "No data" });
-  }
-  const { callorie, notRecommendedProduct } = await getUserDiaryInfo(id);
-  if (!callorie) {
-    return res.status(400).json({ message: "No user" });
-  }
+    const userInfo = await getUserDiaryInfo(_id);
 
-  res.status(200).json({ callorie, notRecommendedProduct });
+    if (!userInfo) return res.status(400).json({ message: 'No user' });
+
+    const { callorie, notRecommendedProduct } = userInfo;
+
+    res.status(200).json({ callorie, notRecommendedProduct });
+};
+
+const postUserDiaryInfoController = async (req, res, next) => {
+    const { _id, callorie, notRecommendedProduct } = req.user;
+
+    await postUserDiaryInfo(_id, callorie, notRecommendedProduct);
+
+    res.status(200).json({ message: 'Succes' });
 };
 
 module.exports = {
-  postUserDiaryInfoController,
-  getUserDiaryInfoController,
+    postUserDiaryInfoController,
+    getUserDiaryInfoController,
 };
