@@ -20,16 +20,16 @@ const {
 
 const router = express.Router();
 
-// DailyCalorieForm отправляет запрос на сервер с группой крови для фильтрации продуктов
-//
-
-// TODO: добавить проверку авторизации
 router.get(
   "/dayinfo",
   validationToken,
   asyncWrapper(getUserDiaryInfoController)
 );
-router.get("/:date", asyncWrapper(getUserProductsByDateController));
+router.get(
+  "/:date",
+  validationToken,
+  asyncWrapper(getUserProductsByDateController)
+);
 router.post(
   "/dayinfo",
   validationToken,
@@ -43,7 +43,6 @@ router.post(
   asyncWrapper(createUserProductController)
 );
 
-// router.delete("/:userid", validationToken, asyncWrapper(getDiaryListItem));
-router.delete("/:id", asyncWrapper(deleteDiaryListItem));
+router.delete("/:id", validationToken, asyncWrapper(deleteDiaryListItem));
 
 module.exports = router;
