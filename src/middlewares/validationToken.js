@@ -15,7 +15,7 @@ const validationToken = async (req, res, next) => {
       req.user = user;
       next();
     } catch (error) {
-      if (error.message === "Invalid sugnature") {
+      if (error.message === "Invalid signature") {
         error.status = 401;
       }
       error.message = "Not authorized";
