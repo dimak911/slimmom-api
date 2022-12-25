@@ -81,7 +81,6 @@ const logout = async (req, res, next) => {
 };
 
 const currentUser = async (req, res, next) => {
-  console.log("req: ", req);
   const { user } = req;
   const currentUser = await User.findOne({ token: user.token });
 
