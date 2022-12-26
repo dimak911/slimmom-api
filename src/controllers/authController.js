@@ -83,11 +83,14 @@ const logout = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   const { user } = req;
   const currentUser = await User.findOne({ token: user.token });
-
+  const { name, email, data, callorie, notRecommendedProduct } = currentUser;
   return res.status(200).json({
     user: {
-      name: currentUser.name,
-      email: currentUser.email,
+      name,
+      email,
+      data,
+      callorie,
+      notRecommendedProduct,
     },
   });
 };
