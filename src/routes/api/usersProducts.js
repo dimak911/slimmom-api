@@ -20,13 +20,16 @@ const {
 
 const router = express.Router();
 
-// TODO: добавить проверку авторизации
 router.get(
   "/dayinfo",
   validationToken,
   asyncWrapper(getUserDiaryInfoController)
 );
-router.get("/:date", asyncWrapper(getUserProductsByDateController));
+router.get(
+  "/:date",
+  validationToken,
+  asyncWrapper(getUserProductsByDateController)
+);
 router.post(
   "/dayinfo",
   validationToken,
@@ -40,7 +43,6 @@ router.post(
   asyncWrapper(createUserProductController)
 );
 
-// router.delete("/:userid", validationToken, asyncWrapper(getDiaryListItem));
-router.delete("/:userid", asyncWrapper(deleteDiaryListItem));
+router.delete("/:id", validationToken, asyncWrapper(deleteDiaryListItem));
 
 module.exports = router;

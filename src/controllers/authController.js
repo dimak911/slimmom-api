@@ -17,14 +17,28 @@ const generateTokens = (payload) => {
 };
 
 const signup = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password,
+    data = null,
+    callorie = null,
+    notRecommendedProduct = [],
+  } = req.body;
   const existingEmail = await User.findOne({ email });
   if (existingEmail) {
     throw customError({ status: 409, message: "Email in use" });
   }
 
   try {
-    const user = new User({ name, email, password });
+    const user = new User({
+      name,
+      email,
+      password,
+      data,
+      callorie,
+      notRecommendedProduct,
+    });
     await user.save();
 
     const payload = {
@@ -84,7 +98,7 @@ const logout = async (req, res, next) => {
   const { id } = req.user;
   await User.findByIdAndUpdate(id, { token: null, tokenR: null });
   res.clearCookie("rtoken");
-  res.status(204).json();
+  res.status(200).json({ message: "Success" });
 };
 
 const currentUser = async (req, res, next) => {

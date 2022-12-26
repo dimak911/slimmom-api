@@ -19,6 +19,16 @@ const userSchema = new Schema(
     callorie: {
       type: String,
     },
+    data: {
+      type: Object,
+      default: {
+        age: "",
+        bloodType: "",
+        currentWeight: "",
+        desiredWeight: "",
+        height: "",
+      },
+    },
     notRecommendedProduct: {
       type: Array,
     },
