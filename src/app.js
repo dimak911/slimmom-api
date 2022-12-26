@@ -3,6 +3,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../swagger.json");
+const cookieParser = require("cookie-parser");
 
 // import routers here
 const usersProductsRouter = require("./routes/api/usersProducts");
@@ -14,7 +15,15 @@ const app = express();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(
+  cors({
+    // origin: true,
+    // credentials: true,
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
