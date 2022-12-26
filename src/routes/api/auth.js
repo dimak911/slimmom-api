@@ -27,14 +27,6 @@ router.post("/login", validationBody(schemaAuth), asyncWrapper(login));
 router.post("/logout", validationToken, asyncWrapper(logout));
 router.get("/current", validationToken, asyncWrapper(currentUser));
 // refresh token  asyncWrapper(currentUser)
-router.post(
-  "/refreshToken",
-  function (req, res, next) {
-    console.log("Cookies: ", req.cookies);
-    next();
-  },
-  validationRefresh,
-  asyncWrapper(refreshToken)
-);
+router.post("/refreshToken", validationRefresh, asyncWrapper(refreshToken));
 
 module.exports = router;
