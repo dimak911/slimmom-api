@@ -8,6 +8,7 @@ const swaggerDocument = require("../swagger.json");
 const usersProductsRouter = require("./routes/api/usersProducts");
 const authRouter = require("./routes/api/auth");
 const productsRouter = require("./routes/api/products");
+const calculateRouter = require("./routes/api/calculate");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/diary", usersProductsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/calculate", calculateRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
