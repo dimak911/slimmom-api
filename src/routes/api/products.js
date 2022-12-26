@@ -8,11 +8,13 @@ const { productsSchema } = require("../../joiSchema/productsSchema");
 const {
   getProductsController,
 } = require("../../controllers/productsController");
+const validationToken = require("../../middlewares/validationToken");
 
 const router = express.Router();
 
 router.get(
   "/",
+  validationToken,
   validationQuery(productsSchema),
   asyncWrapper(getProductsController)
 );

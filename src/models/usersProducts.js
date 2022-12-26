@@ -4,15 +4,13 @@ const getUserProductsByDate = async (userId, date) => {
   const userProductsByDate = await DiaryUserProduct.find({
     owner: userId,
     date,
-  }).catch(() => null);
-
+  });
   return userProductsByDate;
 };
 
 const createUserProduct = async (
   userId,
-  date,
-  { productName, productWeight, productCalories }
+  { productName, productWeight, productCalories, date }
 ) => {
   const userProductsByDate = await DiaryUserProduct.create({
     owner: userId,

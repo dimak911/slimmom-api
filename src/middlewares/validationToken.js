@@ -4,13 +4,14 @@ const jwt = require("jsonwebtoken");
 const validationToken = async (req, res, next) => {
   const authHeader = req.headers.authorization || " ";
   const [bearer, token] = authHeader.split(" ");
+  console.log("11111111111       ", token);
 
   if (bearer === "Bearer" && token) {
     try {
       const { id, exp } = jwt.verify(token, process.env.SECRET_KEY);
       const user = await User.findById(id);
-
       if (!user || !user.token) {
+        console.log("!user || !user.token");
         throw new Error();
       }
 
@@ -37,6 +38,7 @@ const validationToken = async (req, res, next) => {
       }
 
       error.message = "Not authorized";
+
       error.status = 401;
       next(error);
     }

@@ -2,10 +2,10 @@ const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
-    {
+  {
     name: {
-        type: String,
-        default: 'Anonim',
+      type: String,
+      default: "Anonim",
     },
     password: {
       type: String,
@@ -19,10 +19,24 @@ const userSchema = new Schema(
     callorie: {
       type: String,
     },
+    data: {
+      type: Object,
+      default: {
+        age: "",
+        bloodType: "",
+        currentWeight: "",
+        desiredWeight: "",
+        height: "",
+      },
+    },
     notRecommendedProduct: {
       type: Array,
     },
     token: {
+      type: String,
+      default: null,
+    },
+    tokenR: {
       type: String,
       default: null,
     },
@@ -31,14 +45,14 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
-    const user = this;
+  const user = this;
 
-    if (!user.isModified("password")) next();
+  if (!user.isModified("password")) next();
 
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(user.password, salt);
-    user.password = hashedPassword;
-    next();
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(user.password, salt);
+  user.password = hashedPassword;
+  next();
 });
 
 const User = model("user", userSchema);

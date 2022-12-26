@@ -1,30 +1,60 @@
+require("dotenv").config();
+
 const User = require("../models/schemas/authModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { customError } = require("../helpers/errors");
 
+const generateTokens = (payload) => {
+  const tokenR = jwt.sign(payload, process.env.SECRET_KEY_REFRESH, {
+    expiresIn: "30d",
+  });
+  const token = jwt.sign(payload, process.env.SECRET_KEY, {
+    expiresIn: "30s",
+  });
+  return { token, tokenR };
+};
+
 const signup = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password,
+    data = null,
+    callorie = null,
+    notRecommendedProduct = [],
+  } = req.body;
   const existingEmail = await User.findOne({ email });
   if (existingEmail) {
     throw customError({ status: 409, message: "Email in use" });
   }
 
   try {
-    const user = new User({ name, email, password });
+    const user = new User({
+      name,
+      email,
+      password,
+      data,
+      callorie,
+      notRecommendedProduct,
+    });
     await user.save();
 
     const payload = {
       id: user.id,
     };
+    const { token, tokenR } = generateTokens(payload);
 
-    const token = jwt.sign(payload, process.env.SECRET_KEY);
+    await User.findByIdAndUpdate(user.id, { token, tokenR });
 
-    await User.findByIdAndUpdate(user.id, { token });
+    res.cookie("rtoken", tokenR, {
+      httpOnly: true,
+    });
 
     return res.status(201).json({
       token,
+      tokenR,
       user: {
         name,
         email,
@@ -52,8 +82,12 @@ const login = async (req, res, next) => {
     id: user.id,
   };
 
-  const token = jwt.sign(payload, process.env.SECRET_KEY);
-  await User.findByIdAndUpdate(user.id, { token });
+  const { token, tokenR } = generateTokens(payload);
+
+  await User.findByIdAndUpdate(user.id, { token, tokenR });
+  res.cookie("rtoken", tokenR, {
+    httpOnly: true,
+  });
   res.status(200).json({
     token,
     user: { email: user.email, name: user.name },
@@ -62,11 +96,9 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   const { id } = req.user;
-
   await User.findByIdAndUpdate(id, { token: null, tokenR: null });
-
   res.clearCookie("rtoken");
-  return res.status(200).json({ message: "Success" });
+  res.status(200).json({ message: "Success" });
 };
 
 const currentUser = async (req, res, next) => {
@@ -81,9 +113,43 @@ const currentUser = async (req, res, next) => {
   });
 };
 
+const refreshToken = async (req, res, next) => {
+  const { id } = req.user;
+
+  const user = await User.findById(id);
+
+  try {
+    const payload = {
+      id: user.id,
+    };
+
+    const { token, tokenR } = generateTokens(payload);
+
+    const result = await User.findByIdAndUpdate(
+      user.id,
+      { token, tokenR },
+      {
+        new: true,
+      }
+    );
+
+    res.cookie("rtoken", tokenR, {
+      httpOnly: true,
+    });
+
+    return res.status(201).json({
+      message: "Successfully refreshed",
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   logout,
   signup,
   currentUser,
+  refreshToken,
 };
