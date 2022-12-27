@@ -10,7 +10,7 @@ const signup = async (req, res, next) => {
     email,
     password,
     data = null,
-    callorie = null,
+    calorie = null,
     notRecommendedProduct = [],
   } = req.body;
   const existingEmail = await User.findOne({ email });
@@ -24,7 +24,7 @@ const signup = async (req, res, next) => {
       email,
       password,
       data,
-      callorie,
+      calorie,
       notRecommendedProduct,
     });
     await user.save();
@@ -50,7 +50,7 @@ const signup = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
@@ -74,25 +74,49 @@ const login = async (req, res, next) => {
   });
 };
 
-const logout = async (req, res, next) => {
+const logout = async (req, res) => {
   const { id } = req.user;
   await User.findByIdAndUpdate(id, { token: null });
   res.status(200).json({ message: "Success" });
 };
 
-const currentUser = async (req, res, next) => {
+const currentUser = async (req, res) => {
   const { user } = req;
   const currentUser = await User.findOne({ token: user.token });
-  const { name, email, data, callorie, notRecommendedProduct } = currentUser;
+  const { name, email, data, calorie, notRecommendedProduct } = currentUser;
   return res.status(200).json({
     user: {
       name,
       email,
-      data,
-      callorie,
-      notRecommendedProduct,
     },
+    data,
+    calorie,
+    notRecommendedProduct,
+    render: true,
   });
+};
+
+const addData = async (req, res) => {
+  const { id } = req.user;
+  console.log(id);
+  const { data = null, calorie = null, notRecommendedProduct = [] } = req.body;
+
+  const userData = await User.findByIdAndUpdate(id, {
+    data,
+    calorie,
+    notRecommendedProduct,
+  });
+
+  return res.status(200).json({ data, calorie, notRecommendedProduct });
+  // const { name, email, data, calorie, notRecommendedProduct } = currentUser;
+  // return res.status(200).json({
+  //   user: {
+  //     name,
+  //     email,
+  //     data,
+  //     calorie,
+  //     notRecommendedProduct,
+  //   },
 };
 
 module.exports = {
@@ -100,4 +124,5 @@ module.exports = {
   logout,
   signup,
   currentUser,
+  addData,
 };

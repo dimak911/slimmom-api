@@ -1,18 +1,20 @@
 const User = require("../models/schemas/authModel");
 
 const calories = async (req, res, next) => {
-  const { data = null,
-    callorie = null,
-    notRecommendedProduct = [], } = req.body;
+  const { data = null, calorie = null, notRecommendedProduct = [] } = req.body;
   const { user } = req;
 
   const currentUser = await User.findOne({ token: user.token });
-  await User.findByIdAndUpdate(user._id, { data, callorie, notRecommendedProduct });
+  await User.findByIdAndUpdate(user._id, {
+    data,
+    calorie,
+    notRecommendedProduct,
+  });
   return res.status(200).json({
     name: currentUser.name,
     email: currentUser.email,
     data,
-    callorie,
+    calorie,
     notRecommendedProduct,
   });
 };
@@ -32,12 +34,12 @@ const refreshCalories = async (req, res, next) => {
     name: currentUser.name,
     email: currentUser.email,
     data: currentUser.data,
-    callorie: currentUser.callorie,
+    calorie: currentUser.calorie,
     notRecommendedProduct: currentUser.notRecommendedProduct,
   });
 };
 
 module.exports = {
   calories,
-  refreshCalories
+  refreshCalories,
 };
