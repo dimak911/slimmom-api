@@ -21,7 +21,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password,
-    data = null,
+    data,
     callorie = null,
     notRecommendedProduct = [],
   } = req.body;
@@ -90,7 +90,11 @@ const login = async (req, res, next) => {
   });
   res.status(200).json({
     token,
-    user: { email: user.email, name: user.name },
+    user: {
+      email: user.email, name: user.name, data: user.data,
+      callorie: user.callorie,
+      notRecommendedProduct: user.notRecommendedProduct
+    },
   });
 };
 
