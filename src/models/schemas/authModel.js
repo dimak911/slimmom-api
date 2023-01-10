@@ -16,7 +16,7 @@ const userSchema = new Schema(
       required: [true, "Email is required"],
       unique: true,
     },
-    callorie: {
+    calorie: {
       type: String,
     },
     data: {

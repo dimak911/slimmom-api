@@ -10,23 +10,23 @@ const getUserDiaryInfoController = async (req, res, next) => {
 
   if (!userInfo) return res.status(400).json({ message: "No user" });
 
-  const { callorie, notRecommendedProduct } = userInfo;
+  const { calorie, notRecommendedProduct } = userInfo;
 
-  res.status(200).json({ callorie, notRecommendedProduct });
+  res.status(200).json({ calorie, notRecommendedProduct });
 };
 
 const postUserDiaryInfoController = async (req, res, next) => {
   const { _id } = req.user;
 
-  const { callorie, notRecommendedProduct } = req.body;
+  const { calorie, notRecommendedProduct } = req.body;
 
-  const user = await postUserDiaryInfo(_id, callorie, notRecommendedProduct);
+  const user = await postUserDiaryInfo(_id, calorie, notRecommendedProduct);
 
   if (!user) {
     res.status(404).json("No user");
   }
 
-  res.status(200).json({ callorie, notRecommendedProduct });
+  res.status(200).json({ calorie, notRecommendedProduct });
 };
 
 module.exports = {
