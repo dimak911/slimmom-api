@@ -10,7 +10,7 @@ const signup = async (req, res, next) => {
     email,
     password,
     data,
-    callorie = null,
+    calorie = null,
     notRecommendedProduct = [],
   } = req.body;
   const existingEmail = await User.findOne({ email });
@@ -24,7 +24,7 @@ const signup = async (req, res, next) => {
       email,
       password,
       data,
-      callorie,
+      calorie,
       notRecommendedProduct,
     });
     await user.save();
@@ -71,9 +71,11 @@ const login = async (req, res, next) => {
   res.status(200).json({
     token,
     user: {
-      email: user.email, name: user.name, data: user.data,
-      callorie: user.callorie,
-      notRecommendedProduct: user.notRecommendedProduct
+      email: user.email,
+      name: user.name,
+      data: user.data,
+      calorie: user.calorie,
+      notRecommendedProduct: user.notRecommendedProduct,
     },
   });
 };
@@ -87,13 +89,13 @@ const logout = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   const { user } = req;
   const currentUser = await User.findOne({ token: user.token });
-  const { name, email, data, callorie, notRecommendedProduct } = currentUser;
+  const { name, email, data, calorie, notRecommendedProduct } = currentUser;
   return res.status(200).json({
     user: {
       name,
       email,
       data,
-      callorie,
+      calorie,
       notRecommendedProduct,
     },
   });

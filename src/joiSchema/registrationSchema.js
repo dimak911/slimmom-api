@@ -15,7 +15,7 @@ const registrationUserSchema = Joi.object({
     .alphanum()
     .pattern(new RegExp(pattern)),
   token: Joi.string(),
-  callorie: Joi.string(),
+  calorie: Joi.string(),
   data: Joi.object(),
   notRecommendedProduct: Joi.array(),
 });
